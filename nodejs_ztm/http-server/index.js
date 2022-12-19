@@ -18,12 +18,17 @@ const FRIENDS = [
 ];
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/friends') {
+  const items = req.url.split('/');
+  if (items[1] === 'friends') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
-    res.end(JSON.stringify());
-  } else if (req.url === '/messages') {
+    if (items[2]) {
+      res.end(JSON.stringify(FRIENDS[items[2]]));
+    } else {
+      res.end(JSON.stringify(FRIENDS));
+    }
+  } else if (items[1] === 'messages') {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
     res.write('<body>');
