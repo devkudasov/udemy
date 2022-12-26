@@ -19,7 +19,18 @@ const FRIENDS = [
 
 const server = http.createServer((req, res) => {
   const items = req.url.split('/');
-  if (items[1] === 'friends') {
+  if (req.method === 'POST' && items[1] === 'friends') {
+    const friend = {};
+    req.on('data', (data) => {
+      friend.id = FRIENDS.length;
+      friend.name = JSON.parse(data.toString());
+      
+      FRIENDS.push(friend);
+    });
+
+    req.pipe(res);
+    
+  } else if (req.method === 'GET' && items[1] === 'friends') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
@@ -28,7 +39,7 @@ const server = http.createServer((req, res) => {
     } else {
       res.end(JSON.stringify(FRIENDS));
     }
-  } else if (items[1] === 'messages') {
+  } else if (req.method === 'GET' && items[1] === 'messages') {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
     res.write('<body>');
