@@ -11,7 +11,7 @@
     "watch:client": "npm start --prefix client",
     "watch": "npm run watch:server & npm run watch:client",
     "deploy": "npm run build --prefix client && npm start --prefix server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm test --prefix client && npm test --prefix server"
   },
   "keywords": [],
   "author": "",
